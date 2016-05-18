@@ -1,7 +1,6 @@
 from django.db import models
-from django.utils import timezone
 from django.db.models import Q
-
+from django.db.utils import IntegrityError
 # Create your models here.
 
 
@@ -31,6 +30,10 @@ class Staff(models.Model):
     post = models.ForeignKey('Post', verbose_name=u'Должность', )
 
     objects = StaffManager()
+
+    class Meta:
+        unique_together = ('first_name', 'middle_name', 'last_name', 'post')
+
     def __str__(self):
         return str(self.get_full_name())
 
@@ -56,7 +59,6 @@ class Staff(models.Model):
     #         return True
     #     return False
 
-
 class Document(models.Model):
     EMPLOYEMENT = 0
     DISMISSMENT = 1
@@ -71,6 +73,15 @@ class Document(models.Model):
     employ_date = models.DateField(u'Дата приема', blank=True, null=True)
     dismiss_date = models.DateField(u'Дата увольнения', blank=True, null=True)
     number = models.IntegerField(u'Номер', unique=True)
+
+    def save(self, *args, **kwargs):
+        if self.document_type == self.EMPLOYEMENT and self.employ_date is None:
+            raise IntegrityError
+        if self.document_type == self.DISMISSMENT and self.dismiss_date is None:
+            raise IntegrityError
+        if self.DOCUMENT_TYPE == self.DISMISSMENT and self.dismiss_date is not None and self.employ_date is None:
+            raise IntegrityError
+        super(Document, self).save(*args, **kwargs)
 
     def __str__(self):
         return str(self.number)

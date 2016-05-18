@@ -1,11 +1,28 @@
 {% extends "base.html" %}
 {%  block content %}
 
-<div>Не принятые</div>
+<div>Не принятые:
 {{ new_staff.count }}
-<div>Уволенные</div>
+<br><ul>
+    {% for st in new_staff %}
+    <li>{{ st }}</li>
+    {% endfor %}
+</ul>
+</div>
+<div>Уволенные:
 {{ dismiss_staff.count }}
-<div>Работающие</div>
+<br><ul>
+    {% for st in dismiss_staff %}
+    <li>{{ st }}</li>
+    {% endfor %}
+</ul>
+</div>
+<div>Работающие:
 {{ working_staff.count }}
-
+<br><ul>
+    {% for st in working_staff %}
+    <li>{{ st }}</li>
+    {% endfor %}
+</ul>
+</div>
 {% endblock %}
