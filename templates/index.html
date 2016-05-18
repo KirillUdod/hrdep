@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-<a href="{% url 'hrdep:doc' %}">Employ</a>
-<a href="{% url 'hrdep:doc' %}">Employ</a>
+{% extends "base.html" %}
+{%  block content %}
+<a href="{% url 'hrdep:employ' %}">Employ</a>
+<a href="{% url 'hrdep:dismiss' %}">Dismiss</a>
 <a href="{% url 'hrdep:report' %}">Report</a>
-</body>
-</html>
+{% endblock %}
