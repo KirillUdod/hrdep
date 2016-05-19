@@ -52,8 +52,8 @@ class DismissDocumentView(FormView):
             staff.save()
             doc.save()
             messages.success(request,
-                             "Создан документ %s № %s от %d %m %Y" %
-                             (doc.DOCUMENT_TYPE[doc.DISMISSMENT][1], doc, doc.date))
+                             "Создан документ %s № %s от %s" %
+                             (doc.DOCUMENT_TYPE[doc.DISMISSMENT][1], doc, doc.date.strftime('%B %d, %Y')))
             return HttpResponseRedirect(reverse('hrdep:index'))
 
         return render(request, self.template_name, {'form': form})

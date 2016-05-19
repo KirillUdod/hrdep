@@ -1,7 +1,7 @@
 from django import forms
 from django.utils import timezone
 
-import datetime
+from datetime import datetime
 
 from .models import Document, Staff
 
@@ -9,19 +9,15 @@ from .models import Document, Staff
 class DateField(forms.DateField):
 
     def validate(self, value):
-        "Check if value consists only of valid emails."
-
-        # Use the parent's handling of required fields, etc.
         super(DateField, self).validate(value)
-        print(value)
-        print(timezone.now().date())
         if value > timezone.now().date():
             raise forms.ValidationError('Date is not correct')
 
 
 class EmployDocumentForm(forms.ModelForm):
     employ_date = DateField(widget=forms.SelectDateWidget,
-                            label='Дата приема')
+                            label='Дата приема',
+                            initial=datetime.today().date())
     staff = forms.ModelChoiceField(queryset=Staff.objects.all_new(), label='Сотрудник')
 
     class Meta:
@@ -30,7 +26,9 @@ class EmployDocumentForm(forms.ModelForm):
 
 
 class DismissDocumentForm(forms.ModelForm):
-    dismiss_date = DateField(widget=forms.SelectDateWidget, label='Дата увольнения')
+    dismiss_date = DateField(widget=forms.SelectDateWidget,
+                             label='Дата увольнения',
+                             initial=datetime.today().date())
     staff = forms.ModelChoiceField(queryset=Staff.objects.all_working(), label='Сотрудник')
 
     class Meta:
