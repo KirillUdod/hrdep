@@ -5,6 +5,7 @@ import datetime
 
 from .models import Document, Staff
 
+
 class DateField(forms.Field):
 
     def validate(self, value):
@@ -17,16 +18,20 @@ class DateField(forms.Field):
         if value > str(timezone.now().date()):
             raise forms.ValidationError('Date is not correct')
 
+
 class EmployDocumentForm(forms.ModelForm):
     employ_date = DateField(widget=forms.SelectDateWidget, label='Дата приема')
-    staff = forms.ModelChoiceField(queryset=Staff.objects.all_new(),label='Сотрудник')
+    staff = forms.ModelChoiceField(queryset=Staff.objects.all_new(), label='Сотрудник')
+
     class Meta:
         model = Document
         fields = ["staff", "employ_date", "number"]
 
+
 class DismissDocumentForm(forms.ModelForm):
     dismiss_date = DateField(widget=forms.SelectDateWidget, label='Дата увольнения')
     staff = forms.ModelChoiceField(queryset=Staff.objects.all_working(), label='Сотрудник')
+
     class Meta:
         model = Document
 
