@@ -32,7 +32,7 @@ class Staff(models.Model):
     objects = StaffManager()
 
     class Meta:
-        unique_together = ('first_name', 'middle_name', 'last_name', 'post')
+        unique_together = ('first_name', 'middle_name', 'last_name')
 
     def __str__(self):
         return str(self.get_full_name())
@@ -59,6 +59,7 @@ class Staff(models.Model):
     #         return True
     #     return False
 
+
 class Document(models.Model):
     EMPLOYEMENT = 0
     DISMISSMENT = 1
@@ -73,6 +74,9 @@ class Document(models.Model):
     employ_date = models.DateField(u'Дата приема', blank=True, null=True)
     dismiss_date = models.DateField(u'Дата увольнения', blank=True, null=True)
     number = models.IntegerField(u'Номер', unique=True)
+
+    class Meta:
+        unique_together = ('date', 'number')
 
     def save(self, *args, **kwargs):
         if self.document_type == self.EMPLOYEMENT and self.employ_date is None:
