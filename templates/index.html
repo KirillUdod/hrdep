@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {%  block content %}
-<a href="{% url 'hrdep:employ' %}">Employ</a>
-<a href="{% url 'hrdep:dismiss' %}">Dismiss</a>
-<a href="{% url 'hrdep:report' %}">Report</a>
+    <div style="text-align: center;">
+<h3><a href="{% url 'hrdep:employ' %}">Employ</a></h3><br>
+<h3><a href="{% url 'hrdep:dismiss' %}">Dismiss</a></h3><br>
+<h3><a href="{% url 'hrdep:report' %}">Report</a></h3>
+    </div>
 {% endblock %}

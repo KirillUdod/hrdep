@@ -30,8 +30,10 @@ class EmployDocumentView(FormView):
             staff.employ_date = doc.employ_date
             staff.save()
             doc.save()
-            messages.success(request, "Successfully employed")
-            return HttpResponseRedirect(reverse('hrdep:report'))
+            messages.success(request,
+                             "Создан документ %s № %s от %s" %
+                             (doc.DOCUMENT_TYPE[doc.EMPLOYEMENT][1], doc, doc.date.strftime('%B %d, %Y')))
+            return HttpResponseRedirect(reverse('hrdep:index'))
 
         return render(request, self.template_name, {'form': form})
 
@@ -49,8 +51,10 @@ class DismissDocumentView(FormView):
             staff.dismiss_date = doc.dismiss_date
             staff.save()
             doc.save()
-            messages.success(request, "Successfully dismissed")
-            return HttpResponseRedirect(reverse('hrdep:report'))
+            messages.success(request,
+                             "Создан документ %s № %s от %d %m %Y" %
+                             (doc.DOCUMENT_TYPE[doc.DISMISSMENT][1], doc, doc.date))
+            return HttpResponseRedirect(reverse('hrdep:index'))
 
         return render(request, self.template_name, {'form': form})
 
@@ -61,7 +65,7 @@ class ReportView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ReportView, self).get_context_data(**kwargs)
-        context['new_staff'] = Staff.objects.all_new()
+        context['new_staff'] = Staff.objects.all_employed()
         context['dismiss_staff'] = Staff.objects.all_dismissed()
         context['working_staff'] = Staff.objects.all_working()
 

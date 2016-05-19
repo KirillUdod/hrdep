@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {%  block content %}
-<form method="POST" action="">{% csrf_token %}{{ form.as_p }}
-<input type="submit" value="OK">
-</form>
+    <div style="text-align: center;">
+        <form method="POST" action="">{% csrf_token %}{{ form.as_p }}
+        <input type="submit" value="OK">
+        </form>
+
+    <hr>
+<h3><a href="{% url 'hrdep:index' %}">Вернуться на главную</a></h3>
+    </div>
 {% endblock %}

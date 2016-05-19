@@ -14,6 +14,10 @@ class StaffManager(models.Manager):
         qs = super(StaffManager, self).filter(employ_date=None, dismiss_date=None)
         return qs
 
+    def all_employed(self):
+        qs = super(StaffManager, self).filter(~Q(employ_date=None))
+        return qs
+
     def all_dismissed(self):
         qs = super(StaffManager, self).filter(~Q(employ_date=None), ~Q(dismiss_date=None))
         return qs
@@ -76,7 +80,7 @@ class Document(models.Model):
     number = models.IntegerField(u'Номер', unique=True)
 
     class Meta:
-        unique_together = ('date', 'number')
+        unique_together = ('staff', 'document_type')
 
     def save(self, *args, **kwargs):
         if self.document_type == self.EMPLOYEMENT and self.employ_date is None:
