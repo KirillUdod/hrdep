@@ -70,10 +70,10 @@ class DoesNotCompute(Exception):
 
 class Document(models.Model):
     EMPLOYEMENT = 0
-    DISMISSMENT = 1
+    DISMISSION = 1
     DOCUMENT_TYPE = (
         (EMPLOYEMENT, u'Прием на работу'),
-        (DISMISSMENT, u'Увольнение')
+        (DISMISSION, u'Увольнение')
     )
 
     staff = models.ForeignKey('Staff', verbose_name=u'Сотрудник',)

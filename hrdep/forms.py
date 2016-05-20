@@ -16,9 +16,9 @@ class DateField(forms.DateField):
 
 
 class EmployDocumentForm(DocumentCheckedForm):
-    employ_date = DateField(widget=forms.SelectDateWidget,
-                            label='Дата приема',
-                            initial=datetime.today().date())
+    employ_date = forms.DateField(widget=forms.SelectDateWidget,
+                                  label='Дата приема',
+                                  initial=datetime.today().date())
     staff = forms.ModelChoiceField(queryset=Staff.objects.all_new(), label='Сотрудник')
 
     class Meta:
@@ -27,12 +27,11 @@ class EmployDocumentForm(DocumentCheckedForm):
 
 
 class DismissDocumentForm(DocumentCheckedForm):
-    dismiss_date = DateField(widget=forms.SelectDateWidget,
-                             label='Дата увольнения',
-                             initial=datetime.today().date())
+    dismiss_date = forms.DateField(widget=forms.SelectDateWidget,
+                                   label='Дата увольнения',
+                                   initial=datetime.today().date())
     staff = forms.ModelChoiceField(queryset=Staff.objects.all_working(), label='Сотрудник')
 
     class Meta:
         model = Document
-
         fields = ["staff", "dismiss_date", "number"]
