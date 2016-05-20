@@ -22,21 +22,24 @@ TEXT_TO_STATUS_INTEGER = {
 class DocumentCheckedForm(forms.ModelForm):
     def clean(self):
         cleaned_data = self.cleaned_data
+        staff = cleaned_data.get('staff')
         employ_date = cleaned_data.get('employ_date')
         dismiss_date = cleaned_data.get('dismiss_date')
         document_type = cleaned_data.get('document_type')
+        if document_type == 1 and staff.employ_date is None:
+            raise forms.ValidationError(u"%s невозможно уволить. Он не был принят" % staff.get_full_name())
         if employ_date is None and dismiss_date is None:
             raise forms.ValidationError(u"Введите дату приема/увольнения")
         if employ_date is not None and dismiss_date is not None:
             raise forms.ValidationError(u"Не может быть одновременно дата увольнения и приема")
         if document_type == 0 and employ_date is None and dismiss_date is not None:
             raise forms.ValidationError(u"Для документа Приема должна быть дата приема")
-        else:
-            if employ_date > datetime.today().date():
-                raise forms.ValidationError(u"Дата приема не может быть будущей")
         if document_type == 1 and employ_date is not None and dismiss_date is None:
             raise forms.ValidationError(u"Для документа Увольнения должна быть дата увольнения")
-        else:
+        if employ_date is not None:
+            if employ_date > datetime.today().date():
+                raise forms.ValidationError(u"Дата приема не может быть будущей")
+        if dismiss_date is not None:
             if dismiss_date > datetime.today().date():
                 raise forms.ValidationError(u"Дата увольнения не может быть будущей")
         return super(DocumentCheckedForm, self).clean()

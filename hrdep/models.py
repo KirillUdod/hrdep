@@ -87,11 +87,11 @@ class Document(models.Model):
         unique_together = ('staff', 'document_type')
 
     def save(self, *args, **kwargs):
-            staff = self.staff
-            staff.employ_date = self.employ_date if self.employ_date else None
-            staff.dismiss_date = self.dismiss_date if self.dismiss_date else None
-            staff.save()
-            super(Document, self).save(*args, **kwargs)
+        staff = self.staff
+        staff.employ_date = self.employ_date if staff.employ_date is None else staff.employ_date
+        staff.dismiss_date = self.dismiss_date if self.dismiss_date else None
+        staff.save()
+        super(Document, self).save(*args, **kwargs)
 
     def __str__(self):
         return str(self.number)
