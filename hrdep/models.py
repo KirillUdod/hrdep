@@ -44,7 +44,7 @@ class Staff(models.Model):
     def get_full_name(self):
         full_name = u' '.join([self.first_name, self.middle_name, self.last_name])
         return full_name
-
+    get_full_name.short_description = u'Полное имя'
     # @property
     # def is_working(self):
     #     if self.employ_date is not None and self.employ_date <= timezone.now().date() and self.dismiss_date is None:
