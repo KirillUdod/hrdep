@@ -27,14 +27,18 @@ class DocumentCheckedForm(forms.ModelForm):
         document_type = cleaned_data.get('document_type')
         if employ_date is None and dismiss_date is None:
             raise forms.ValidationError(u"Введите дату приема/увольнения")
-        elif employ_date is not None and dismiss_date is not None:
+        if employ_date is not None and dismiss_date is not None:
             raise forms.ValidationError(u"Не может быть одновременно дата увольнения и приема")
-        elif document_type == 0 and employ_date is None and dismiss_date is not None:
-            raise forms.ValidationError(u"Для документа Приема должна быть только дата приема")
-        elif document_type == 1 and employ_date is not None and dismiss_date is None:
-            raise forms.ValidationError(u"Для документа Увольнения должна быть только дата увольнения")
-        elif employ_date > datetime.today().date() or dismiss_date > datetime.today().date():
-            raise forms.ValidationError(u"Дата приема/увольнения не может быть будующей")
+        if document_type == 0 and employ_date is None and dismiss_date is not None:
+            raise forms.ValidationError(u"Для документа Приема должна быть дата приема")
+        else:
+            if employ_date > datetime.today().date():
+                raise forms.ValidationError(u"Дата приема не может быть будущей")
+        if document_type == 1 and employ_date is not None and dismiss_date is None:
+            raise forms.ValidationError(u"Для документа Увольнения должна быть дата увольнения")
+        else:
+            if dismiss_date > datetime.today().date():
+                raise forms.ValidationError(u"Дата увольнения не может быть будущей")
         return super(DocumentCheckedForm, self).clean()
 
 
