@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models import Q
-from django.db.utils import IntegrityError
+from django.core.exceptions import ValidationError
 # Create your models here.
 
 
@@ -63,6 +63,10 @@ class Staff(models.Model):
     #         return True
     #     return False
 
+class DoesNotCompute(Exception):
+    """ Easy to understand naming conventions work best! """
+    pass
+
 
 class Document(models.Model):
     EMPLOYEMENT = 0
@@ -83,13 +87,11 @@ class Document(models.Model):
         unique_together = ('staff', 'document_type')
 
     def save(self, *args, **kwargs):
-        if self.document_type == self.EMPLOYEMENT and self.employ_date is None:
-            raise IntegrityError
-        if self.document_type == self.DISMISSMENT and self.dismiss_date is None:
-            raise IntegrityError
-        if self.DOCUMENT_TYPE == self.DISMISSMENT and self.dismiss_date is not None and self.employ_date is None:
-            raise IntegrityError
-        super(Document, self).save(*args, **kwargs)
+            staff = self.staff
+            staff.employ_date = self.employ_date if self.employ_date else None
+            staff.dismiss_date = self.dismiss_date if self.dismiss_date else None
+            staff.save()
+            super(Document, self).save(*args, **kwargs)
 
     def __str__(self):
         return str(self.number)

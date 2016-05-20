@@ -4,6 +4,7 @@ from django.utils import timezone
 from datetime import datetime
 
 from .models import Document, Staff
+from .admin import DocumentCheckedForm
 
 
 class DateField(forms.DateField):
@@ -14,7 +15,7 @@ class DateField(forms.DateField):
             raise forms.ValidationError('Date is not correct')
 
 
-class EmployDocumentForm(forms.ModelForm):
+class EmployDocumentForm(DocumentCheckedForm):
     employ_date = DateField(widget=forms.SelectDateWidget,
                             label='Дата приема',
                             initial=datetime.today().date())
@@ -25,7 +26,7 @@ class EmployDocumentForm(forms.ModelForm):
         fields = ["staff", "employ_date", "number"]
 
 
-class DismissDocumentForm(forms.ModelForm):
+class DismissDocumentForm(DocumentCheckedForm):
     dismiss_date = DateField(widget=forms.SelectDateWidget,
                              label='Дата увольнения',
                              initial=datetime.today().date())

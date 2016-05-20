@@ -14,21 +14,18 @@ class IndexView(TemplateView):
 
 class EmployDocumentView(FormView):
     template_name = 'form.html'
-    # initial = {'document_type': '0'}
+    initial = {'document_type': '0'}
     form_class = EmployDocumentForm
 
-    # def get(self, request, *args, **kwargs):
-    #     form = self.form_class(initial=self.initial)
-    #     return render(request, self.template_name, {'form': form})
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
             doc = form.save()
             doc.document_type = doc.EMPLOYEMENT
-            staff = doc.staff
-            staff.employ_date = doc.employ_date
-            staff.save()
             doc.save()
             messages.success(request,
                              "Создан документ %s № %s от %s" %
@@ -47,9 +44,6 @@ class DismissDocumentView(FormView):
         if form.is_valid():
             doc = form.save()
             doc.document_type = doc.DISMISSMENT
-            staff = doc.staff
-            staff.dismiss_date = doc.dismiss_date
-            staff.save()
             doc.save()
             messages.success(request,
                              "Создан документ %s № %s от %s" %

@@ -1,12 +1,15 @@
-from django.contrib import admin
+from django import forms
+from django.contrib import admin, messages
+from django.core.exceptions import ValidationError
 
 # Register your models here.
-from .models import Document, Post, Staff
+from .models import Document, Post, Staff, DoesNotCompute
 
 
 class StaffModelAdmin(admin.ModelAdmin):
     readonly_fields = ["employ_date", "dismiss_date"]
     search_fields = ["last_name", "post"]
+    list_display = ['get_full_name', 'employ_date', 'dismiss_date', 'post']
 
 
 TEXT_TO_STATUS_INTEGER = {
@@ -15,7 +18,31 @@ TEXT_TO_STATUS_INTEGER = {
 }
 
 
+class DocumentCheckedForm(forms.ModelForm):
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        employ_date = cleaned_data.get('employ_date')
+        dismiss_date = cleaned_data.get('dismiss_date')
+        document_type = cleaned_data.get('document_type')
+        if employ_date is None and dismiss_date is None:
+            raise forms.ValidationError(u"Введите дату приема/увольнения")
+        if employ_date is not None and dismiss_date is not None:
+            raise forms.ValidationError(u"Не может быть одновременно дата увольнения и приема")
+        if document_type == 0 and employ_date is None and dismiss_date is not None:
+            raise forms.ValidationError("Для документа Приема должна быть только дата приема")
+        if document_type == 1 and employ_date is not None and dismiss_date is None:
+            raise forms.ValidationError("Для документа Увольнения должна быть только дата увольнения")
+        return super(DocumentCheckedForm, self).clean()
+
+
+class DocumentModelAdminForm(DocumentCheckedForm):
+    class Meta:
+        model = Document
+        fields = '__all__'
+
+
 class DocumentModelAdmin(admin.ModelAdmin):
+    form = DocumentModelAdminForm
     search_fields = ['staff__last_name', 'staff__middle_name', 'staff__first_name', "document_type"]
     readonly_fields = ["date"]
     list_display = ['staff', 'document_type', 'date', 'employ_date', 'dismiss_date', 'number']
