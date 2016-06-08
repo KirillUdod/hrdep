@@ -12,7 +12,6 @@ class StaffModelAdmin(admin.ModelAdmin):
     search_fields = ["last_name", "post"]
     list_display = ['get_full_name', 'employ_date', 'dismiss_date', 'post']
 
-
 TEXT_TO_STATUS_INTEGER = {
     u'Прием на работу': 0,
     u'Увольнение': 1,

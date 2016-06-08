@@ -10,10 +10,10 @@ from .models import Staff
 
 # Create your views here.
 class IndexView(TemplateView):
-    template_name = "index.html"
+    template_name = 'hrdep/index.html'
 
 class EmployDocumentView(FormView):
-    template_name = 'form.html'
+    template_name = 'hrdep/form.html'
     initial = {'document_type': '0'}
     form_class = EmployDocumentForm
 
@@ -36,7 +36,7 @@ class EmployDocumentView(FormView):
 
 
 class DismissDocumentView(FormView):
-    template_name = 'form.html'
+    template_name = 'hrdep/form.html'
     form_class = DismissDocumentForm
 
     def post(self, request, *args, **kwargs):
@@ -54,7 +54,7 @@ class DismissDocumentView(FormView):
 
 
 class ReportView(ListView):
-    template_name = "report.html"
+    template_name = 'hrdep/report.html'
     model = Staff
 
     def get_context_data(self, **kwargs):

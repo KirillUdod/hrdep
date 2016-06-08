@@ -20,6 +20,7 @@ from django.contrib import admin
 urlpatterns = [
 
     url(r'^admin/', admin.site.urls),
-    url(r'^', include("hrdep.urls", namespace='hrdep')),
+    url(r'^hrdep/', include("hrdep.urls", namespace='hrdep')),
+    url(r'^', include("game.urls", namespace='game')),
 
 ]
