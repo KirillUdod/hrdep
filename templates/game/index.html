@@ -1,21 +1,8 @@
-{% extends "base.html" %}
-{% load static %}
-{% block title %}
-<title>Gamedev</title>
-{% endblock %}
-{% block style %}
-<style>
-    * { padding: 0; margin: 0; }
-    canvas { background: #eee; display: block; margin: 0 auto; }
-</style>
-{% endblock %}
-
+{% extends 'base.html' %}
 {% block content %}
-    <canvas id="myCanvas" width="480" height="320"></canvas>
-{% endblock content %}
-{% block customjs %}
-{#    <script src="{% static 'js/game1.js' %}"></script>#}
-    <script src="{% static 'js/game2.js' %}"></script>
+<div style="text-align: center;">
+<h3><a href="{% url 'game:game1' %}">Just HTML5</a></h3><br>
+<h3><a href="{% url 'game:game2' %}">With Phaser</a></h3><br>
+    </div>
 
-{% endblock customjs %}
-
+{% endblock %}

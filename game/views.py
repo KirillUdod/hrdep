@@ -10,4 +10,10 @@ class MainView(TemplateView):
     template_name = "main.html"
 
 class IndexView(TemplateView):
-    template_name = "game/index.html"
+    template_name = 'game/index.html'
+
+class Game1View(TemplateView):
+    template_name = "game/game1.html"
+
+class Game2View(TemplateView):
+    template_name = "game/game2.html"
